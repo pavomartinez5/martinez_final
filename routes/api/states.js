@@ -5,5 +5,8 @@ const verifyStates = require("../../middleware/verifyStates");
 
 router.route("/").get(statesController.getStates);
 router.route("/:state").get(verifyStates(), statesController.getState);
+router
+  .route("/:state/:parameter")
+  .get(verifyStates(), statesController.getStateInfo);
 
 module.exports = router;

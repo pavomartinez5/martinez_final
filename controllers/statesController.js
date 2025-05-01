@@ -55,8 +55,6 @@ const getStates = async (req, res) => {
 
 const getState = async (req, res) => {
   try {
-    //build switch for the rest of the responses
-
     //All data for the state URL parameter
     const states = await mergedData();
 
@@ -69,7 +67,58 @@ const getState = async (req, res) => {
   }
 };
 
+const getStateInfo = async (req, res) => {
+  try {
+    //build switch for the rest of the responses
+
+    //All data for the state URL parameter
+    const states = await mergedData();
+
+    // Extract additional parameter from URL
+    const stateCode = req.params.state?.toUpperCase();
+    const state = states.find((s) => s.code === stateCode);
+
+    // Extract additional parameter from URL
+    const parameter = req.params.parameter?.toLowerCase();
+
+    switch (parameter) {
+      case "funfact":
+        if (!state.funfacts || state.funfacts.length === 0) {
+          return res
+            .status(404)
+            .json({ message: `No Fun Facts found for ${state.state}` });
+        }
+        //Get a random fun fact from the array
+        const randomFact =
+          state.funfacts[Math.floor(Math.random() * state.funfacts.length)];
+        return res.status(200).json({ funfacts: randomFact });
+      case "capital":
+        return res
+          .status(200)
+          .json({ state: state.state, capital: state.capital_city });
+      case "nickname":
+        return res
+          .status(200)
+          .json({ state: state.state, nickname: state.nickname });
+      case "population":
+        return res.status(200).json({
+          state: state.state,
+          population: state.population.toString(),
+        });
+      case "admission":
+        return res
+          .status(200)
+          .json({ state: state.state, admitted: state.admission_date });
+      default:
+        return res.status(400).json({ message: "Invalid parameter" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getStates,
   getState,
+  getStateInfo,
 };
