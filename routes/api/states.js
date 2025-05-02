@@ -9,4 +9,8 @@ router
   .route("/:state/:parameter")
   .get(verifyStates(), statesController.getStateInfo);
 
+router
+  .route("/:state/funfact")
+  .post(verifyStates(), statesController.createStateFunfact);
+
 module.exports = router;
