@@ -40,6 +40,7 @@ const getStates = async (req, res) => {
   }
 };
 
+//Get single state
 const getState = async (req, res) => {
   try {
     //Import merge data
@@ -62,6 +63,7 @@ const getState = async (req, res) => {
   }
 };
 
+//Get state info with specific parameter
 const getStateInfo = async (req, res) => {
   try {
     //All data for the state URL parameter
@@ -116,6 +118,7 @@ const getStateInfo = async (req, res) => {
 
 //--------------------- POST -------------------------------------------------
 
+//Create a new funfact in state array
 const createStateFunfact = async (req, res) => {
   try {
     // Extract parameter from URL
@@ -173,6 +176,7 @@ const createStateFunfact = async (req, res) => {
 
 //--------------------- Patch -------------------------------------------------
 
+//Update a funfact in state array
 const updateStateFunfact = async (req, res) => {
   try {
     // Extract parameter from URL
@@ -232,6 +236,7 @@ const updateStateFunfact = async (req, res) => {
   }
 };
 //--------------------- DELETE -------------------------------------------------
+//Delete funfact in state array
 const deleteStateFunfact = async (req, res) => {
   // Extract parameter from URL
   const stateCode = req.params.state?.toUpperCase();
