@@ -129,15 +129,18 @@ const createStateFunfact = async (req, res) => {
     //Extract body parameter
     const newFunFacts = req?.body?.funfacts;
 
-    // Verify you have received this "funfacts" data and verify the data is provided as an array and verity that the array is not empty
-    if (
-      !newFunFacts ||
-      !Array.isArray(newFunFacts) ||
-      newFunFacts.length === 0
-    ) {
+    //check to see that the array is not empty
+    if (!newFunFacts || newFunFacts.length === 0) {
       return res
         .status(400)
         .json({ message: "State fun facts value required" });
+    }
+
+    // Verify you have received this "funfacts" data and verify the data is provided as an array and verity that the array is not empty
+    if (!Array.isArray(newFunFacts)) {
+      return res
+        .status(400)
+        .json({ message: "State fun facts value must be an array" });
     }
 
     //Find state in MongoDB
@@ -205,10 +208,17 @@ const updateStateFunfact = async (req, res) => {
     const states = await mergedData();
     const stateName = states.find((s) => s.code === stateCode);
 
-    //Check to see if the index is with in the array
-    if (!state || !state.funfacts || state.funfacts.length <= index) {
+    //Check to see if the array is empty
+    if (!state || !state.funfacts || state.funfacts.length === 0) {
       return res.status(400).json({
         message: `No Fun Facts found for ${stateName.state}`,
+      });
+    }
+
+    //Check to see if the index is out side of the array
+    if (state.funfacts.length <= index) {
+      return res.status(400).json({
+        message: `No Fun Fact found at that index for ${stateName.state}`,
       });
     }
 
