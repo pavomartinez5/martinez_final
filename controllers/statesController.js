@@ -11,19 +11,6 @@ const mergedData = require("../model/mergedData");
 //---------------------GET -------------------------------------------------
 
 //Get All States function
-//Currently not in use leaving it in case i need it.--
-const getAllStates = async (req, res) => {
-  try {
-    // Access the merged data from request object
-    const states = await mergedData();
-
-    //All state data returned
-    res.status(200).json(states);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 const getStates = async (req, res) => {
   try {
     const states = await mergedData();
