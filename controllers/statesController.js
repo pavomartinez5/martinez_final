@@ -237,7 +237,7 @@ const deleteStateFunfact = async (req, res) => {
   // Verify you have received the index and  the funfact data and verify that index is starting at 1 not 0
   if (isNaN(index) || index < 0) {
     return res.status(400).json({
-      message: "State fun fact index value required and must be valid.",
+      message: "State fun fact index value required",
     });
   }
 
