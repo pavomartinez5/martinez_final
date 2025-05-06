@@ -1,6 +1,6 @@
 //---------------------Imports -------------------------------------------------
 //Import the statesData Middleware --- Delete file if I do not use later for clean up
-const statesDataFileDB = require("../middleware/statesData");
+const statesDataFileDB = require("../model/statesData");
 
 //Import the states Schema model
 const statesMongoDB = require("../model/States");
@@ -58,7 +58,7 @@ const getState = async (req, res) => {
     //Import merge data
     const states = await mergedData();
 
-    //Extract the paramater form the URL
+    //Extract the parameter form the URL
     const stateCode = req.params.state?.toUpperCase();
 
     //Retrieve the single state from the merged data
@@ -68,6 +68,7 @@ const getState = async (req, res) => {
     if (!state.funfacts || state.funfacts.length === 0) {
       state = statesDataFileDB.states.find((s) => s.code === stateCode);
     }
+    //Send back state
     res.json(state);
   } catch (err) {
     console.log(err);
@@ -97,7 +98,7 @@ const getStateInfo = async (req, res) => {
         //Get a random fun fact from the array
         const randomFact =
           state.funfacts[Math.floor(Math.random() * state.funfacts.length)];
-        return res.status(200).json({ funfacts: randomFact });
+        return res.status(200).json({ funfact: randomFact });
       case "capital":
         return res
           .status(200)
