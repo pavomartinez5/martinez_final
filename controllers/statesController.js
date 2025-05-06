@@ -55,12 +55,19 @@ const getStates = async (req, res) => {
 
 const getState = async (req, res) => {
   try {
-    //All data for the state URL parameter
+    //Import merge data
     const states = await mergedData();
 
+    //Extract the paramater form the URL
     const stateCode = req.params.state?.toUpperCase();
-    const state = states.find((s) => s.code === stateCode);
 
+    //Retrieve the single state from the merged data
+    let state = states.find((s) => s.code === stateCode);
+
+    //If merged dat does not have funfacts change state variable to Json information
+    if (!state.funfacts || state.funfacts.length === 0) {
+      state = statesDataFileDB.states.find((s) => s.code === stateCode);
+    }
     res.json(state);
   } catch (err) {
     console.log(err);
