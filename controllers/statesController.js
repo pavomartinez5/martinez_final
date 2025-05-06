@@ -189,7 +189,7 @@ const updateStateFunfact = async (req, res) => {
     // Verify you have received the index and  the funfact data and verify that index is starting at 1 not 0
     if (isNaN(index) || index < 0) {
       return res.status(400).json({
-        message: "State fun fact index value required and must be valid.",
+        message: "State fun fact index value required",
       });
     }
 
@@ -208,7 +208,7 @@ const updateStateFunfact = async (req, res) => {
     //Check to see if the index is with in the array
     if (!state || !state.funfacts || state.funfacts.length <= index) {
       return res.status(400).json({
-        message: `No Fun Fact found at that index for ${stateName.state}`,
+        message: `No Fun Facts found for ${stateName.state}`,
       });
     }
 
@@ -249,7 +249,14 @@ const deleteStateFunfact = async (req, res) => {
   const stateName = states.find((s) => s.code === stateCode);
 
   //Check to see if the index is with in the array
-  if (!state || !state.funfacts || state.funfacts.length <= index) {
+  if (!state || !state.funfacts) {
+    return res.status(400).json({
+      message: `No Fun Facts found for ${stateName.state}`,
+    });
+  }
+
+  //Check to see if the index is with in the array
+  if (state.funfacts.length <= index) {
     return res.status(400).json({
       message: `No Fun Fact found at that index for ${stateName.state}`,
     });
