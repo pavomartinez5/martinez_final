@@ -11,6 +11,8 @@ router
 
 router
   .route("/:state/funfact")
-  .post(verifyStates(), statesController.createStateFunfact);
+  .post(verifyStates(), statesController.createStateFunfact)
+  .patch(verifyStates(), statesController.updateStateFunfact)
+  .delete(verifyStates(), statesController.deleteStateFunfact);
 
 module.exports = router;

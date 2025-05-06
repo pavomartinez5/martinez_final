@@ -141,9 +141,9 @@ const createStateFunfact = async (req, res) => {
     }
 
     //Find state in MongoDB
-    const state = await statesMongoDB.findOne({ stateCode });
+    const state = await statesMongoDB.findOne({ stateCode }).exec();
 
-    // Check to see if state exist, if it does not exist ust the newFunFacts, if it does exist Filter out fun facts already in the database
+    // Check to see if state exist, if it does not exist use the newFunFacts, if it does exist Filter out fun facts already in the database
     const filteredFacts = !state
       ? newFunFacts
       : newFunFacts.filter((fact) => !state.funfacts.includes(fact));
@@ -165,7 +165,7 @@ const createStateFunfact = async (req, res) => {
     );
 
     // Retrieve the updated document
-    const updatedDocument = await statesMongoDB.findOne({ stateCode });
+    const updatedDocument = await statesMongoDB.findOne({ stateCode }).exec();
 
     return res.status(200).json(updatedDocument);
   } catch (err) {
@@ -173,9 +173,111 @@ const createStateFunfact = async (req, res) => {
   }
 };
 
+//--------------------- Patch -------------------------------------------------
+
+const updateStateFunfact = async (req, res) => {
+  try {
+    // Extract parameter from URL
+    const stateCode = req.params.state?.toUpperCase();
+
+    //Extract body parameter, you should subtract 1 to adjust for the data array
+    const index = req?.body?.index - 1;
+
+    //Extract body parameter
+    const funFactUpdate = req?.body?.funfact;
+
+    // Verify you have received the index and  the funfact data and verify that index is starting at 1 not 0
+    if (isNaN(index) || index < 0) {
+      return res.status(400).json({
+        message: "State fun fact index value required and must be valid.",
+      });
+    }
+
+    //Verify the request body should have a funfact property
+    if (!funFactUpdate) {
+      return res.status(400).json({ message: "State fun fact value required" });
+    }
+
+    //Find state in MongoDB
+    const state = await statesMongoDB.findOne({ stateCode }).exec();
+
+    //Bring in all states to extract state names
+    const states = await mergedData();
+    const stateName = states.find((s) => s.code === stateCode);
+
+    //Check to see if the index is with in the array
+    if (!state || !state.funfacts || state.funfacts.length <= index) {
+      return res.status(400).json({
+        message: `No Fun Fact found at that index for ${stateName.state}`,
+      });
+    }
+
+    // update funfact
+    await statesMongoDB.updateOne(
+      { stateCode },
+      { $set: { [`funfacts.${index}`]: funFactUpdate } } //Update index
+    );
+
+    // Retrieve the updated document
+    const updatedDocument = await statesMongoDB.findOne({ stateCode }).exec();
+
+    return res.status(200).json(updatedDocument);
+  } catch (err) {
+    console.log(err);
+  }
+};
+//--------------------- DELETE -------------------------------------------------
+const deleteStateFunfact = async (req, res) => {
+  // Extract parameter from URL
+  const stateCode = req.params.state?.toUpperCase();
+
+  //Extract body parameter, you should subtract 1 to adjust for the data array
+  const index = req?.body?.index - 1;
+
+  // Verify you have received the index and  the funfact data and verify that index is starting at 1 not 0
+  if (isNaN(index) || index < 0) {
+    return res.status(400).json({
+      message: "State fun fact index value required and must be valid.",
+    });
+  }
+
+  //Find state in MongoDB
+  const state = await statesMongoDB.findOne({ stateCode }).exec();
+
+  //Bring in all states to extract state names
+  const states = await mergedData();
+  const stateName = states.find((s) => s.code === stateCode);
+
+  //Check to see if the index is with in the array
+  if (!state || !state.funfacts || state.funfacts.length <= index) {
+    return res.status(400).json({
+      message: `No Fun Fact found at that index for ${stateName.state}`,
+    });
+  }
+
+  //You may find filtering an element from an existing array to be the best approach here. In this example underline (_) represents the element but since we are not using the element we are just adding underscore
+  //You do not want to simply delete an element and leave an undefined value in the array.
+  const upDatedFunFacts = state.funfacts.filter(
+    (_, funFactsIndex) => funFactsIndex !== index
+  );
+
+  // update funfact
+  await statesMongoDB.updateOne(
+    { stateCode },
+    { $set: { funfacts: upDatedFunFacts } } //Remove index
+  );
+
+  // Retrieve the updated document
+  const updatedDocument = await statesMongoDB.findOne({ stateCode }).exec();
+
+  return res.status(200).json(updatedDocument);
+};
+
 module.exports = {
   getStates,
   getState,
   getStateInfo,
   createStateFunfact,
+  updateStateFunfact,
+  deleteStateFunfact,
 };
