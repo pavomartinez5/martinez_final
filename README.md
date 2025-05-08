@@ -4,8 +4,8 @@
 Name: Pavel Martinez <br>
 Class: INF653_VB_Back-End Web Development I <br>
 Final Project <br>
-Website link:
-[![View on Glitch](https://cdn.glitch.global/6c2cfc26-ff43-4c1b-8526-113c1f144c38%2Fremix-button.svg?v=1617028269401)](https://foul-breezy-jar.glitch.me)
+Website link:<br>
+[<img src="https://cdn.gomix.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix-button.svg" width="163px" />](https://foul-breezy-jar.glitch.me)
 
 
 
