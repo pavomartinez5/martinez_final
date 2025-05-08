@@ -5,7 +5,7 @@ Name: Pavel Martinez <br>
 Class: INF653_VB_Back-End Web Development I <br>
 Final Project <br>
 Website link:<br>
-[![View on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fview-button.svg)](https://glitch.com/~YOUR_PROJECT_NAME)
+[![View Website](path/to/your/button-image.png)](your-website-url.com)
 
 
 
