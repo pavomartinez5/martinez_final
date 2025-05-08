@@ -4,9 +4,7 @@
 Name: Pavel Martinez <br>
 Class: INF653_VB_Back-End Web Development I <br>
 Final Project <br>
-Website link:<br>
-[<div class="glitchButton"></div><script src="https://button.glitch.me/button.js"></script>](https://glitch.com/edit/#!/foul-breezy-jar?previewSize=0&attributionHidden=false&sidebarCollapsed=false&path=&previewFirst=false)
-
+Website link: https://foul-breezy-jar.glitch.me
 
 
 
